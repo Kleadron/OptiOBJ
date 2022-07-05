@@ -9,3 +9,10 @@ USAGE
 Drag and drop an OBJ file onto the exe, or run it from the command line.
 There's no exception handling yet, if it crashes you probably have a malformed OBJ file.
 The program accepts the -auto flag if you want to run it without pausing for user input.
+
+NOTES
+=====
+Objects (o) and Groups (g) are not preserved after the optimization process. This program assumes you want your model to be a single, solid, unnamed object.
+Smoothing groups (s) are not preserved and I have found no use for them.
+Lines are not preserved as I have found no use for them.
+This does not optimize MTL files and currently only supports one MTL reference in the optimized file.

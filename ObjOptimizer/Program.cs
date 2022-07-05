@@ -112,7 +112,7 @@ namespace ObjOptimizer
                 Console.WriteLine("Specify or drag-and-drop an OBJ file onto this exe to optimize it.");
                 Console.WriteLine("-? or no arguments shows this screen.");
                 Console.WriteLine("-auto does not wait for any key presses after optimization.");
-                //Console.WriteLine("-tri converts all faces to triangles, if they aren't already."); // NOT IMPLEMENTED
+                Console.WriteLine("-tri converts all faces to triangles, if they aren't already."); // NOT IMPLEMENTED
                 Console.WriteLine("Options must go AFTER the OBJ file path!");
                 Console.WriteLine("Press any key to close...");
                 Console.ReadKey();
@@ -121,6 +121,7 @@ namespace ObjOptimizer
 
             // the 
             bool automatic = args.Contains("-auto");
+            bool triangulate = args.Contains("-tri");
 
             string objPath = args[0];
 
@@ -382,43 +383,68 @@ namespace ObjOptimizer
                 {
                     Face f = faces[i];
                     // start a face line with "f"
-                    string faceLine = "f";
 
-                    for (int j = 0; j < f.vertices.Count; j++)
+                    int tris;
+                    int vertsPerFace;
+
+                    if (triangulate)
                     {
-                        // space out the vertex from the "f" token or previous vertex
-                        faceLine += " ";
-
-                        Vertex v = f.vertices[j];
-
-                        // vertex indices have a 1 added to the value because of the OBJ format.
-
-                        // case: any, vertices always have position
-                        int posIndex = posIndices[v.posIndex]+1;
-                        faceLine += posIndex.ToString();
-
-                        // case: has normal but no UV
-                        if (v.uvIndex == -1 && v.normIndex != -1)
-                        {
-                            int normIndex = normIndices[v.normIndex]+1;
-                            faceLine += "//" + normIndex;
-                        }
-                        // case: has UV but unsure of normal
-                        else if (v.uvIndex != -1)
-                        {
-                            int uvIndex = uvIndices[v.uvIndex]+1;
-                            faceLine += "/" + uvIndex;
-
-                            // case: has normal
-                            if (v.normIndex != -1)
-                            {
-                                int normIndex = normIndices[v.normIndex]+1;
-                                faceLine += "/" + normIndex;
-                            }
-                        }
+                        // 3 vertices = 1 triangle
+                        // 4 vertices = 2 triangles
+                        // etc
+                        tris = f.vertices.Count - 2;
+                        vertsPerFace = 3;
+                    }
+                    else
+                    {
+                        tris = 1;
+                        vertsPerFace = f.vertices.Count;
                     }
 
-                    optiLines.Add(faceLine);
+                    Vertex v0 = f.vertices[0];
+
+                    for (int triI = 0; triI < tris; triI++)
+                    {
+                        string faceLine = "f";
+
+                        for (int j = 0; j < vertsPerFace; j++)
+                        {
+                            // space out the vertex from the "f" token or previous vertex
+                            faceLine += " ";
+
+                            Vertex v = (j == 0) ? v0 : f.vertices[j + triI];
+
+                            // vertex indices have a 1 added to the value because of the OBJ format.
+
+                            // case: any, vertices always have position
+                            int posIndex = posIndices[v.posIndex] + 1;
+                            faceLine += posIndex.ToString();
+
+                            // case: has normal but no UV
+                            if (v.uvIndex == -1 && v.normIndex != -1)
+                            {
+                                int normIndex = normIndices[v.normIndex] + 1;
+                                faceLine += "//" + normIndex;
+                            }
+                            // case: has UV but unsure of normal
+                            else if (v.uvIndex != -1)
+                            {
+                                int uvIndex = uvIndices[v.uvIndex] + 1;
+                                faceLine += "/" + uvIndex;
+
+                                // case: has normal
+                                if (v.normIndex != -1)
+                                {
+                                    int normIndex = normIndices[v.normIndex] + 1;
+                                    faceLine += "/" + normIndex;
+                                }
+                            }
+                        }
+
+                        optiLines.Add(faceLine);
+                    }
+
+                    
                 }
             }
 

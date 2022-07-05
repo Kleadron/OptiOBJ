@@ -9,6 +9,7 @@ USAGE
 Drag and drop an OBJ file onto the exe, or run it from the command line.
 There's no exception handling yet, if it crashes you probably have a malformed OBJ file.
 The program accepts the -auto flag if you want to run it without pausing for user input.
+The -tri flag can be used to split up n-gons in the model into just triangles if desired.
 
 NOTES
 =====

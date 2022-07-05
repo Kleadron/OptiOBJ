@@ -112,7 +112,7 @@ namespace ObjOptimizer
                 Console.WriteLine("Specify or drag-and-drop an OBJ file onto this exe to optimize it.");
                 Console.WriteLine("-? or no arguments shows this screen.");
                 Console.WriteLine("-auto does not wait for any key presses after optimization.");
-                Console.WriteLine("-tri converts all faces to triangles, if they aren't already."); // NOT IMPLEMENTED
+                Console.WriteLine("-tri converts all faces to triangles, if they aren't already.");
                 Console.WriteLine("Options must go AFTER the OBJ file path!");
                 Console.WriteLine("Press any key to close...");
                 Console.ReadKey();

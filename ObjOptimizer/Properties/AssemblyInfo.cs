@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ObjOptimizer")]
-[assembly: AssemblyCopyright("Copyright © Kleadron 2022")]
+[assembly: AssemblyCopyright("Copyright © 2022 Kleadron")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
